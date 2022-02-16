@@ -1,15 +1,16 @@
-function PostsList({posts: {items}}) {
-console.log("PROPSS", items)
-  const list =  items.map((post) => {
-    //   {console.log("HELLO",post.title)}
-        <div className="p-3 border-2 border-green-500 my-2 text-black bg-green-200">
-           <h2>{post.title}</h2> 
-           <p>{post.contentSnippet}</p>
-        </div>
-    })
+import { useState } from "react";
+import FaxScreen from "./FaxScreen";
 
-    return list;
-// return <></>
+function PostsList({ posts: { items } }) {
+  return items.map((post) => {
+    return (
+      <button className="p-3 border-2 border-green-500 bg-green-300 my-2" key={post.guid}
+        onClick={() => {return <FaxScreen props={post}/>}}>
+        <h2>{post.title}</h2>
+        <p>{post.contentSnippet}</p>
+      </button>
+    );
+  })
 }
 
-export default PostsList;
+export default PostsList
