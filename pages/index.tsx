@@ -87,10 +87,10 @@ const Home: NextPage = () => {
           onClick={() => setSelectedPost({})}
           // className="fixed z-20 flex items-center right-10 top-6"
           className="relative mt-5 text-2xl font-bold "
-          >
+        >
           &#8592;
         </button>
-{/* { Object.keys(selectedPost).length !== 0 && */}
+        {/* { Object.keys(selectedPost).length !== 0 && */}
         <div>
           <div className="text-4xl mt-4">
             Title: {selectedPost.title}
@@ -105,68 +105,62 @@ const Home: NextPage = () => {
               Content : <p>{selectedPost["content:encodedSnippet"]}</p>
             </div> */}
         </div>
-{/* } */}
+        {/* } */}
 
-{/* <div className="mt-12 text-2xl">
+        {/* <div className="mt-12 text-2xl">
 <h3>Additional Text</h3>
 <input type="textarea" className=""/>
 </div> */}
-{console.log(destinations)}
-{console.log((destinations.includes("Medium")))}
+        {console.log(destinations)}
+        {console.log((destinations.includes("Medium")))}
         <div className="mt-12 text-2xl bg-black">
-            <h3 className="font-semibold">Publish to</h3>
+          <h3 className="font-semibold">Publish to</h3>
 
-            <div className="my-5 grid grid-cols-3 gap-10">
-              <button className={`p-5 flex flex-col justify-center items-center ${destinations.includes("Medium")?"bg-green-400":"bg-green-200"}`}
-              onClick={()=>{
-               const index =  destinations.indexOf("Medium");
-               if(index === -1) { setDestinations(oldArray => [...oldArray, "Medium"]) }
-               else {
-                 let a = destinations;
-                 a.splice(index)
-                 setDestinations(a);
-               } 
-               }}
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg" className="w-1/4"/>
-                <span className="text-black mt-2 text-2xl font-semibold">Medium
-                {destinations}
-                </span>
-              </button>
-        
-              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={()=>{setDestinations(oldArray => [...oldArray, "Dev.to"])}}
-              >
-                <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-black.png" className="w-1/4"/>
-                <span className="text-black mt-2 text-2xl font-semibold">Dev.to</span>
-              </button>
+          <div className="my-5 grid grid-cols-3 gap-10">
+            <button className={`p-5 flex flex-col justify-center items-center ${destinations.includes("Medium") ? "bg-green-400" : "bg-green-200"}`}
+              onClick={() => {
+                const index = destinations.indexOf("Medium");
+                index === -1 ? setDestinations(oldArray => [...oldArray, "Medium"]) : setDestinations(oldArray => { const copy = oldArray.slice(); copy.splice(index); return [...copy]; });
+              }}
+            >
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg" className="w-1/4" />
+              <span className="text-black mt-2 text-2xl font-semibold">Medium
+              </span>
+            </button>
 
-              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={()=>{setDestinations(oldArray => [...oldArray, "Hashnode"])}}>
-                <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1611902473383/CDyAuTy75.png?auto=compress" className="w-1/4"/>
-                <span className="text-black mt-2 text-2xl font-semibold">Hashnode</span>
-              </button>
+            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={() => { setDestinations(oldArray => [...oldArray, "Dev.to"]) }}
+            >
+              <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-black.png" className="w-1/4" />
+              <span className="text-black mt-2 text-2xl font-semibold">Dev.to</span>
+            </button>
 
-              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={()=>{setDestinations(oldArray => [...oldArray, "Twitter"])}}>
-                <img src="https://www.apacph.org/wp/wp-content/uploads/2014/03/Twitter-Logo-New-.png" className="w-1/4"/>
-                <span className="text-black mt-2 text-2xl font-semibold">Twitter</span>
-              </button>
+            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={() => { setDestinations(oldArray => [...oldArray, "Hashnode"]) }}>
+              <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1611902473383/CDyAuTy75.png?auto=compress" className="w-1/4" />
+              <span className="text-black mt-2 text-2xl font-semibold">Hashnode</span>
+            </button>
 
-              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={()=>{setDestinations(oldArray => [...oldArray, "Hacker News"])}}>
-                <img src="https://cdn.iconscout.com/icon/free/png-256/hackernews-2752164-2284981.png" className="w-1/4"/>
-                <span className="text-black mt-2 text-2xl font-semibold">Hacker News</span>
-              </button>
-              
+            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={() => { setDestinations(oldArray => [...oldArray, "Twitter"]) }}>
+              <img src="https://www.apacph.org/wp/wp-content/uploads/2014/03/Twitter-Logo-New-.png" className="w-1/4" />
+              <span className="text-black mt-2 text-2xl font-semibold">Twitter</span>
+            </button>
 
-            </div>
+            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={() => { setDestinations(oldArray => [...oldArray, "Hacker News"]) }}>
+              <img src="https://cdn.iconscout.com/icon/free/png-256/hackernews-2752164-2284981.png" className="w-1/4" />
+              <span className="text-black mt-2 text-2xl font-semibold">Hacker News</span>
+            </button>
+
+
+          </div>
 
 
         </div>
 
       </div>
-      
+
 
 
     </div>
