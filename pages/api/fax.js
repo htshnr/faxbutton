@@ -17,8 +17,8 @@ const Fax = async (req, res) => {
     publishStatus: "public",
   };
 
-  console.debug("BBB", JSON.stringify(b));
-  const c = JSON.stringify(b);
+//   console.debug("BBB", JSON.stringify(b));
+//   const c = JSON.stringify(b);
 
   if (destinations.includes("Medium")) {
     // fetch("https://api.medium.com/v1/users/14649358ebb43fe25ad84a470a4ba95b8a29b1bafa1125dfbd3319cb9acda4fe5/posts", {
