@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import Destinations from '../components/Destinations';
 import FaxScreen from '../components/FaxScreen';
@@ -8,21 +7,8 @@ import PostsList from '../components/postsList';
 const Home: NextPage = () => {
   const [urlInputBox, setUrlInputBox] = useState("");
   const [posts, setPosts] = useState({});
-  // const [showPosts, setShowPosts] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
-
   const [destinations, setDestinations] = useState(Array());
-
-  // const [destKeys, setDestKeys] = useState(() => {
-  //   if (typeof window !== "undefined") {
-  //     const dk = localStorage.getItem("destKeys");
-  //     if (dk != null) {
-  //       return JSON.parse(dk);
-  //     }
-  //     return {};
-  //   }
-  //   return {};
-  // })
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -37,36 +23,32 @@ const Home: NextPage = () => {
     };
   }, []);
 
-  // console.log("DESTKEYS: ", destKeys)
   return (
     <div className="m-12 flex flex-row justify-center">
       <div className="flex flex-col w-full">
         <input type="url" className="border-green-500 border-2 rounded-lg p-3" placeholder="Your Substack page's URL" value={urlInputBox} onChange={(e) => setUrlInputBox(e.target.value)} />
         <button className="my-6 p-3 bg-green-600 rounded-lg hover:bg-green-700 text-white"
-          onClick={(e) => {
+          onClick={() => {
             if (urlInputBox !== "") {
               //perform checks for url correctness
               fetch("api/cors?url=" + urlInputBox)
                 .then(res => {
                   if (!res.ok) {
-                    // setShowPosts(false)
                     throw Error(res.statusText);
                   }
                   return res;
                 })
                 .then(res => res.json()).then(data => {
                   setPosts(data);
-                  // setShowPosts(true);
                 })
                 .catch(err => {
                   console.log(err);
-                })
+                });
             }
             else { alert("Oops! You haven't added your Substack url yet!") }
           }}
         >Fetch posts</button>
 
-        {/* {showPosts && <PostsList posts={posts} />} */}
         <div className="flex flex-col">
           {Object.keys(posts).length !== 0 && posts.items.map((post) => {
             return (
@@ -79,20 +61,17 @@ const Home: NextPage = () => {
           })}
         </div>
       </div>
-      {/* {Object.keys(selectedPost).length !== 0 && <FaxScreen post={selectedPost} />} */}
       {console.log(selectedPost)}
       <div
-        className={`top-0 right-0 w-2/3 bg-black p-20 text-white fixed overflow-scroll h-full z-10 ease-in-out duration-200 ${(Object.keys(selectedPost).length !== 0) ? "translate-x-0 " : "translate-x-full"}`}>
+        className={`top-0 right-0 w-2/3 bg-black p-20 pt-12 text-white fixed overflow-scroll h-full z-10 ease-in-out duration-200 ${(Object.keys(selectedPost).length !== 0) ? "translate-x-0 " : "translate-x-full"}`}>
 
         <button
           onClick={() => setSelectedPost({})}
-          // className="fixed z-20 flex items-center right-10 top-6"
-          className="relative mt-5 text-2xl font-bold "
+          className="relative text-2xl font-bold "
         >
           &#8592;
         </button>
-        {/* { Object.keys(selectedPost).length !== 0 && */}
-        <div>
+        <div className="mt-6">
           <div className="text-4xl mt-4">
             Title: {selectedPost.title}
           </div>
@@ -102,67 +81,42 @@ const Home: NextPage = () => {
           <div className="mt-2">
             Source: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer"><span className="underline">{selectedPost.link}</span> &#8599;</a>
           </div>
-          {/* <div className="text-white mt-2  font-semibold">
-              Content : <p>{selectedPost["content:encodedSnippet"]}</p>
-            </div> */}
         </div>
-        {/* } */}
-
-        {/* <div className="mt-12 text-2xl">
-<h3>Additional Text</h3>
-<input type="textarea" className=""/>
-</div> */}
-        {console.log(destinations)}
-        {console.log((destinations.includes("Medium")))}
         <div className="mt-12 text-2xl bg-black">
           <h3 className="font-semibold">Publish to</h3>
-
-<Destinations destinations={destinations} setDestinations={setDestinations}/>
-
-
-          {/* <div className="my-5 grid grid-cols-3 gap-10">
-            <button className={`p-5 flex flex-col justify-center items-center ${destinations.includes("Medium") ? "bg-green-400" : "bg-green-200"}`}
-              onClick={() => {
-                const index = destinations.indexOf("Medium");
-                index === -1 ? setDestinations(oldArray => [...oldArray, "Medium"]) : setDestinations(oldArray => { const copy = oldArray.slice(); copy.splice(index); return [...copy]; });
-              }}
-            >
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg" className="w-1/4" />
-              <span className="text-black mt-2 text-2xl font-semibold">Medium
-              </span>
-            </button>
-
-            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={() => { setDestinations(oldArray => [...oldArray, "Dev.to"]) }}
-            >
-              <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-black.png" className="w-1/4" />
-              <span className="text-black mt-2 text-2xl font-semibold">Dev.to</span>
-            </button>
-
-            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={() => { setDestinations(oldArray => [...oldArray, "Hashnode"]) }}>
-              <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1611902473383/CDyAuTy75.png?auto=compress" className="w-1/4" />
-              <span className="text-black mt-2 text-2xl font-semibold">Hashnode</span>
-            </button>
-
-            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={() => { setDestinations(oldArray => [...oldArray, "Twitter"]) }}>
-              <img src="https://www.apacph.org/wp/wp-content/uploads/2014/03/Twitter-Logo-New-.png" className="w-1/4" />
-              <span className="text-black mt-2 text-2xl font-semibold">Twitter</span>
-            </button>
-
-            <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
-              onClick={() => { setDestinations(oldArray => [...oldArray, "Hacker News"]) }}>
-              <img src="https://cdn.iconscout.com/icon/free/png-256/hackernews-2752164-2284981.png" className="w-1/4" />
-              <span className="text-black mt-2 text-2xl font-semibold">Hacker News</span>
-            </button>
-
-
-          </div> */}
-
-
+          <Destinations destinations={destinations} setDestinations={setDestinations} />
         </div>
 
+        <div className="mt-12">
+          <button className="bg-green-300 text-black w-full p-5 text-2xl font-semibold hover:bg-green-400"
+            onClick={() => {
+              if (destinations.length) {
+                fetch("api/fax", {
+                  method: "POST",
+                  headers: {'Content-Type':'application/json'},
+                  body: JSON.stringify([selectedPost, destinations])
+                })
+                  .then(res => {
+                    if (!res.ok) {
+                      throw Error(res.statusText);
+                    }
+                    
+                   { console.log("HMMM", res)
+                     return res; }
+                  })
+                  .then(res => res.json()).then(data => {
+                    console.log(data)
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }
+              else { alert("Oops! You haven't chosen a destination yet!") }
+            }}
+          >
+            Fax
+          </button>
+        </div>
       </div>
 
 
