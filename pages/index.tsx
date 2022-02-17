@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Head from 'next/head';
 import { useState, useEffect } from 'react'
 import Destinations from '../components/Destinations';
 
@@ -8,6 +9,7 @@ const Home: NextPage = () => {
   const [posts, setPosts] = useState({});
   const [selectedPost, setSelectedPost] = useState({});
   const [destinations, setDestinations] = useState(Array());
+
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -23,9 +25,13 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="m-12 flex flex-row justify-center">
+    <>
+    <Head>
+      <title>Faxbutton</title>
+    </Head>
+    <div className="m-12 flex flex-row justify-center antialiased">
       <div className="flex flex-col w-full">
-        <input type="url" className="border-green-500 border-2 rounded-lg p-3" placeholder="Your Substack page's URL" value={urlInputBox} onChange={(e) => setUrlInputBox(e.target.value)} />
+        <input type="url" className="border-green-500 border-2 rounded-lg p-3" placeholder="Your RSS Feed URL" value={urlInputBox} onChange={(e) => setUrlInputBox(e.target.value)} />
         <button className="my-6 p-3 bg-green-600 rounded-lg hover:bg-green-700 text-white"
           onClick={() => {
             if (urlInputBox !== "") {
@@ -44,7 +50,7 @@ const Home: NextPage = () => {
                   console.log(err);
                 });
             }
-            else { alert("Oops! You haven't added your Substack url yet!") }
+            else { alert("Oops! You haven't added your RSS Feed url yet!") }
           }}
         >Fetch posts</button>
 
@@ -70,7 +76,7 @@ const Home: NextPage = () => {
         >
           &#8592;
         </button>
-        <div className="mt-6">
+        <div className="my-6">
           <div className="text-4xl mt-4">
             Title: {selectedPost.title}
           </div>
@@ -81,29 +87,30 @@ const Home: NextPage = () => {
             Source: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer"><span className="underline">{selectedPost.link}</span> &#8599;</a>
           </div>
         </div>
-        <div className="mt-12 text-2xl bg-black">
+   {    !selectedPost.medUrl &&   
+        <div className="my-6 text-2xl bg-black">
           <h3 className="font-semibold">Publish to</h3>
           <Destinations destinations={destinations} setDestinations={setDestinations} />
         </div>
-
-        <div className="mt-12">
+}
+{ !selectedPost.medUrl && 
+        <div className="my-6">
           <button className="bg-green-300 text-black w-full p-5 text-2xl font-semibold hover:bg-green-400"
             onClick={() => {
               if (destinations.length) {
                 fetch("api/fax", {
                   method: "POST",
-                  headers: {'Content-Type':'application/json'},
+                  headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify([selectedPost, destinations])
                 })
                   .then(res => {
                     if (!res.ok) {
                       throw Error(res.statusText);
                     }
-                    
-                   { console.log()
-                     return res; }
+                    return res;
                   })
                   .then(res => res.json()).then(data => {
+                    setSelectedPost(c => { return { ...c, "medUrl": data.url } });
                     console.log(data)
                   })
                   .catch(err => {
@@ -116,11 +123,22 @@ const Home: NextPage = () => {
             Fax
           </button>
         </div>
+}
+        {selectedPost.medUrl &&
+            <div className="mt-4 p-4 bg-green-600 text-lg font-semibold">
+              <p>
+                Published successfully!
+                <a className="block" href={selectedPost.medUrl} target="_blank" rel="noopener noreferrer">
+                 <span className="underline">{selectedPost.medUrl}</span>  &#8599;
+                </a>
+              </p>
+            </div>}
       </div>
 
 
 
     </div>
+    </>
   )
 }
 
