@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import FaxScreen from '../components/FaxScreen';
 import PostsList from '../components/postsList';
@@ -9,16 +10,18 @@ const Home: NextPage = () => {
   // const [showPosts, setShowPosts] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
 
-  const [destKeys, setDestKeys] = useState(() => {
-    if (typeof window !== "undefined") {
-      const dk = localStorage.getItem("destKeys");
-      if (dk != null) {
-        return JSON.parse(dk);
-      }
-      return {};
-    }
-    return {};
-  })
+  const [destinations, setDestinations] = useState(Array());
+
+  // const [destKeys, setDestKeys] = useState(() => {
+  //   if (typeof window !== "undefined") {
+  //     const dk = localStorage.getItem("destKeys");
+  //     if (dk != null) {
+  //       return JSON.parse(dk);
+  //     }
+  //     return {};
+  //   }
+  //   return {};
+  // })
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -33,7 +36,7 @@ const Home: NextPage = () => {
     };
   }, []);
 
-  console.log("DESTKEYS: ", destKeys)
+  // console.log("DESTKEYS: ", destKeys)
   return (
     <div className="m-12 flex flex-row justify-center">
       <div className="flex flex-col w-full">
@@ -83,160 +86,82 @@ const Home: NextPage = () => {
         <button
           onClick={() => setSelectedPost({})}
           // className="fixed z-20 flex items-center right-10 top-6"
-          className="relative my-5 text-2xl font-bold "
+          className="relative mt-5 text-2xl font-bold "
           >
           &#8592;
         </button>
 {/* { Object.keys(selectedPost).length !== 0 && */}
         <div>
-          <div className="text-3xl font-semibold">
+          <div className="text-4xl mt-4">
             Title: {selectedPost.title}
           </div>
-          <div className="mt-2 font-semibold">
-            Description : {selectedPost.contentSnippet}
+          <div className="text-lg mt-4">
+            Description: {selectedPost.contentSnippet}
           </div>
-          <div className="mt-2 font-semibold">
-            Source : <a href={selectedPost.link} target="_blank" rel="noopener noreferrer"><span className="underline">{selectedPost.link}</span> &#8599;</a>
+          <div className="mt-2">
+            Source: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer"><span className="underline">{selectedPost.link}</span> &#8599;</a>
           </div>
           {/* <div className="text-white mt-2  font-semibold">
               Content : <p>{selectedPost["content:encodedSnippet"]}</p>
             </div> */}
         </div>
 {/* } */}
-        <div className="mt-12 text-2xl bg-black">
 
-          <fieldset className="border-t border-b border-white">
-            <legend className="sr-only">Notifications</legend>
-            <div className="divide-y divide-white">
-              <div className="relative flex items-start py-4">
-                <div className="min-w-0 flex-1 text-sm">
-                  <label htmlFor="comments" className="font-medium text-gray-200">
-                    Medium
-                  </label>
-                  {console.log(Boolean(destKeys.Medium))}
-                  {!(Boolean(destKeys.Medium)) &&
-                    <button id="comments-description" className="block text-green-400 hover:text-green-500">
-                      Add your Medium integration token &#8594;
-                    </button>
-                  }
-                </div>
-                <div className="ml-3 flex items-center h-5">
-                  <input
-                    id="comments"
-                    aria-describedby="comments-description"
-                    name="comments"
-                    type="checkbox"
-                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start py-4">
-                  <div className="min-w-0 flex-1 text-sm">
-                    <label htmlFor="candidates" className="font-medium text-gray-200">
-                      Dev.to
-                    </label>
-                    <p id="candidates-description" className="text-gray-500">
-                      Get notified when a candidate applies for a job.
-                    </p>
-                  </div>
-                  <div className="ml-3 flex items-center h-5">
-                    <input
-                      id="candidates"
-                      aria-describedby="candidates-description"
-                      name="candidates"
-                      type="checkbox"
-                      className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start py-4">
-                  <div className="min-w-0 flex-1 text-sm">
-                    <label htmlFor="offers" className="font-medium text-gray-200">
-                      Hashnode
-                    </label>
-                    <p id="offers-description" className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p>
-                  </div>
-                  <div className="ml-3 flex items-center h-5">
-                    <input
-                      id="offers"
-                      aria-describedby="offers-description"
-                      name="offers"
-                      type="checkbox"
-                      className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start py-4">
-                  <div className="min-w-0 flex-1 text-sm">
-                    <label htmlFor="offers" className="font-medium text-gray-200">
-                      Twitter
-                    </label>
-                    <p id="offers-description" className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p>
-                  </div>
-                  <div className="ml-3 flex items-center h-5">
-                    <input
-                      id="offers"
-                      aria-describedby="offers-description"
-                      name="offers"
-                      type="checkbox"
-                      className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start py-4">
-                  <div className="min-w-0 flex-1 text-sm">
-                    <label htmlFor="offers" className="font-medium text-gray-200">
-                      Hacker News
-                    </label>
-                    <p id="offers-description" className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p>
-                  </div>
-                  <div className="ml-3 flex items-center h-5">
-                    <input
-                      id="offers"
-                      aria-describedby="offers-description"
-                      name="offers"
-                      type="checkbox"
-                      className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start py-4">
-                  <div className="min-w-0 flex-1 text-sm">
-                    <label htmlFor="offers" className="font-medium text-gray-200">
-                      Youtube
-                    </label>
-                    <p id="offers-description" className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p>
-                  </div>
-                  <div className="ml-3 flex items-center h-5">
-                    <input
-                      id="offers"
-                      aria-describedby="offers-description"
-                      name="offers"
-                      type="checkbox"
-                      className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
-              </div>
+{/* <div className="mt-12 text-2xl">
+<h3>Additional Text</h3>
+<input type="textarea" className=""/>
+</div> */}
+{console.log(destinations)}
+{console.log((destinations.includes("Medium")))}
+        <div className="mt-12 text-2xl bg-black">
+            <h3 className="font-semibold">Publish to</h3>
+
+            <div className="my-5 grid grid-cols-3 gap-10">
+              <button className={`p-5 flex flex-col justify-center items-center ${destinations.includes("Medium")?"bg-green-400":"bg-green-200"}`}
+              onClick={()=>{
+               const index =  destinations.indexOf("Medium");
+               if(index === -1) { setDestinations(oldArray => [...oldArray, "Medium"]) }
+               else {
+                 let a = destinations;
+                 a.splice(index)
+                 setDestinations(a);
+               } 
+               }}
+              >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg" className="w-1/4"/>
+                <span className="text-black mt-2 text-2xl font-semibold">Medium
+                {destinations}
+                </span>
+              </button>
+        
+              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={()=>{setDestinations(oldArray => [...oldArray, "Dev.to"])}}
+              >
+                <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-black.png" className="w-1/4"/>
+                <span className="text-black mt-2 text-2xl font-semibold">Dev.to</span>
+              </button>
+
+              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={()=>{setDestinations(oldArray => [...oldArray, "Hashnode"])}}>
+                <img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1611902473383/CDyAuTy75.png?auto=compress" className="w-1/4"/>
+                <span className="text-black mt-2 text-2xl font-semibold">Hashnode</span>
+              </button>
+
+              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={()=>{setDestinations(oldArray => [...oldArray, "Twitter"])}}>
+                <img src="https://www.apacph.org/wp/wp-content/uploads/2014/03/Twitter-Logo-New-.png" className="w-1/4"/>
+                <span className="text-black mt-2 text-2xl font-semibold">Twitter</span>
+              </button>
+
+              <button className="p-5 bg-green-200 hover:bg-green-300 flex flex-col justify-center items-center"
+              onClick={()=>{setDestinations(oldArray => [...oldArray, "Hacker News"])}}>
+                <img src="https://cdn.iconscout.com/icon/free/png-256/hackernews-2752164-2284981.png" className="w-1/4"/>
+                <span className="text-black mt-2 text-2xl font-semibold">Hacker News</span>
+              </button>
+              
+
             </div>
-          </fieldset>
+
 
         </div>
 
