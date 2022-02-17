@@ -1,8 +1,7 @@
 import type { NextPage } from 'next'
 import { useState, useEffect } from 'react'
 import Destinations from '../components/Destinations';
-import FaxScreen from '../components/FaxScreen';
-import PostsList from '../components/postsList';
+
 
 const Home: NextPage = () => {
   const [urlInputBox, setUrlInputBox] = useState("");
@@ -101,7 +100,7 @@ const Home: NextPage = () => {
                       throw Error(res.statusText);
                     }
                     
-                   { console.log("HMMM", res)
+                   { console.log()
                      return res; }
                   })
                   .then(res => res.json()).then(data => {

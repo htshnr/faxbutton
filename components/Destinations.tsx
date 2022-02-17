@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 
-function Destinations({destinations, setDestinations}) {
+function Destinations({destinations, setDestinations}:any) {
     // console.log("PROPPPSS", props)
 
     const destList = [
