@@ -42,9 +42,9 @@ const Fax = async (req, res) => {
       },
       body: JSON.stringify(b),
     })
-      .then((r) => res.json())
+      .then((r) => r.json())
       .then((r) => {
-          console.log(r);
+          console.debug(r);
           res.status(200).send(r);
     });
   }
