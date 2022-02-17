@@ -12,7 +12,7 @@ const Fax = async (req, res) => {
   const b = {
     title: post.title,
     contentFormat: "html",
-    content: String(post["content:encoded"]),
+    content: "hello",
     canonicalUrl: post.link,
     publishStatus: "public",
   };
