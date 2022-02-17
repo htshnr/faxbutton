@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import Destinations from '../components/Destinations';
 import FaxScreen from '../components/FaxScreen';
 import PostsList from '../components/postsList';
 
@@ -116,7 +117,10 @@ const Home: NextPage = () => {
         <div className="mt-12 text-2xl bg-black">
           <h3 className="font-semibold">Publish to</h3>
 
-          <div className="my-5 grid grid-cols-3 gap-10">
+<Destinations destinations={destinations} setDestinations={setDestinations}/>
+
+
+          {/* <div className="my-5 grid grid-cols-3 gap-10">
             <button className={`p-5 flex flex-col justify-center items-center ${destinations.includes("Medium") ? "bg-green-400" : "bg-green-200"}`}
               onClick={() => {
                 const index = destinations.indexOf("Medium");
@@ -154,7 +158,7 @@ const Home: NextPage = () => {
             </button>
 
 
-          </div>
+          </div> */}
 
 
         </div>
