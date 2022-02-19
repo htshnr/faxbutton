@@ -19,16 +19,17 @@ const Fax = async (req, res) => {
   };
 
   const bodyParameters = b;
-  axios.post(
-      `https://api.medium.com/v1/users/${mediumId}/posts`,
-      bodyParameters,
-      config
-    )
-    .then((o) => {
-      console.log(o.data.data);
-      res.status(200).send(o.data.data);
-    })
-    .catch(console.log);
+  // axios.post(
+  //     `https://api.medium.com/v1/users/${mediumId}/posts`,
+  //     bodyParameters,
+  //     config
+  //   )
+  //   .then((o) => {
+  //     console.log(o.data.data);
+  //     res.status(200).send(o.data.data);
+  //   })
+  //   .catch(console.log);
+    res.status(200).send({"url":"https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962"})
 };
 
 export default Fax;

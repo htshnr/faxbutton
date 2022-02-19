@@ -1,4 +1,13 @@
+@font-face {
+  font-family: "Chicago";
+  src: url("/ChicagoFLF.ttf");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @tailwind base;
+
 html, body {
   overscroll-behavior-x: none;
   /* overscroll-behavior-y: none; */
@@ -7,7 +16,18 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: black;
+  font-family:
+  "Chicago",
+  "Helvetica Neue",
+  Helvetica,
+  Arial,
+  sans-serif;
+}
+
+body {
+  background-image: url(/macpattern.png);
+  background-size: 4px 4px;
+  
 }
 
 body > div {

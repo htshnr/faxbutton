@@ -4,9 +4,13 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        'in': ['Inter'],
+        'ws': ["'Work Sans'"]
+      }
+    },
   },
   plugins: [
-    require('@tailwindcss/forms'),
   ],
 }
