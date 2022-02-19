@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Dispatch, SetStateAction } from 'react'
 
+
 interface DestProps {
   destinations: string[],
   setDestinations: Dispatch<SetStateAction<string[]>>
@@ -11,7 +12,7 @@ function Destinations({ destinations, setDestinations }: DestProps) {
   const destList = [
     {
       name: "Medium",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg"
+      logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg",
     },
     {
       name: "Dev.to",

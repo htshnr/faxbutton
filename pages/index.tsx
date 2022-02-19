@@ -1,7 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Destinations from '../components/Destinations';
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { Watch } from 'react-loader-spinner';
+import Reward from 'react-rewards';
 
 
 const Home: NextPage = () => {
@@ -10,6 +14,10 @@ const Home: NextPage = () => {
   const [selectedPost, setSelectedPost] = useState<any>({});
   const [destinations, setDestinations] = useState<string[]>(Array());
 
+  const [listLoaderShow, setListLoaderShow] = useState<boolean>(false);
+  const [faxLoaderShow, setFaxLoaderShow] = useState<boolean>(false);
+
+  const doneFaxReward = useRef(null);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -38,9 +46,11 @@ const Home: NextPage = () => {
           <button className="my-6 p-3 bg-green-600 rounded-lg hover:bg-green-700 text-white"
             onClick={() => {
               if (urlInputBox !== "") {
+                setListLoaderShow(true);
                 //perform checks for url correctness
                 fetch("api/cors?url=" + urlInputBox)
                   .then(res => {
+                    setListLoaderShow(false);
                     if (!res.ok) {
                       alert("Error: " + res.statusText);
                       throw Error(res.statusText);
@@ -55,11 +65,12 @@ const Home: NextPage = () => {
                     console.debug(err);
                   });
               }
-              else { alert("Oops! You haven't added your RSS Feed url yet!") }
+              else { alert("You haven't added your RSS feed url yet!") }
             }}
           >Fetch posts</button>
 
           <div className="flex flex-col">
+            {listLoaderShow && <div className='relative mb-6 self-center'> <Watch color='#000000' /> </div>}
             {Object.keys(posts).length !== 0 && posts.items.map((post: any) => {
               return (
                 <button className="p-3 mb-4 w-full text-left border-2 border-green-500 bg-green-200 hover:bg-green-100" key={post.guid}
@@ -73,42 +84,44 @@ const Home: NextPage = () => {
         </div>
         {console.debug(selectedPost)}
         <div
-          className={`flex flex-col justify-evenly top-0 right-0 w-2/3 bg-black p-20 pt-12 text-white fixed overflow-scroll h-full z-10 ease-in-out duration-200 ${(Object.keys(selectedPost).length !== 0) ? "translate-x-0 " : "translate-x-full"}`}>
+          className={`flex flex-col top-0 right-0 w-2/3 bg-black p-20 pt-12 text-white fixed overflow-scroll h-full z-10 ease-in-out duration-200 ${(Object.keys(selectedPost).length !== 0) ? "translate-x-0 " : "translate-x-full"}`}>
 
           <button
             onClick={() => setSelectedPost({})}
-            className="relative mt-24 text-left text-2xl font-bold hover:text-green-200"
+            className="relative text-left text-2xl font-bold hover:text-green-200"
           >
             &#8592;
           </button>
           <div className="my-6">
-            <div className="text-2xl mt-4">
-              Title: {selectedPost.title}
+            <div className="text-2xl font-semibold mt-4">
+              {selectedPost.title}
             </div>
             {/* <div className="text-lg mt-4">
               Description: {selectedPost.contentSnippet}
             </div> */}
             <div className="mt-2">
-              Original: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer"><span className="underline hover:text-green-200">{selectedPost.link}</span> &#8599;</a>
+              Source: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-200">{selectedPost.link}</a>
             </div>
           </div>
-          {!selectedPost.medUrl &&
+          {!selectedPost.medUrl && !faxLoaderShow &&
             <div className="my-6 text-2xl bg-black">
               <h3 className="font-semibold">Publish to</h3>
               <Destinations destinations={destinations} setDestinations={setDestinations} />
             </div>
           }
-          {!selectedPost.medUrl &&
+          {!selectedPost.medUrl && !faxLoaderShow &&
             <div className="my-6">
-              <button className="bg-green-600 hover:bg-green-700 text-white w-full p-5 text-2xl font-semibold "
+              <button className="bg-green-600 hover:bg-green-700 text-white w-full p-5 text-2xl font-semibold"
                 onClick={() => {
                   if (destinations.length) {
+                    setFaxLoaderShow(true);
                     fetch("api/fax", {
                       method: "POST",
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify([selectedPost, destinations])
                     })
                       .then(res => {
+                        setFaxLoaderShow(false);
                         if (!res.ok) {
                           throw Error(res.statusText);
                         }
@@ -116,28 +129,42 @@ const Home: NextPage = () => {
                       })
                       .then(res => res.json()).then(data => {
                         setSelectedPost((c: object) => { return { ...c, "medUrl": data.url } });
-                        console.debug(data)
                       })
                       .catch(err => {
                         console.debug(err);
                       });
                   }
-                  else { alert("Oops! You haven't chosen a destination yet!") }
+                  else { alert("You haven't chosen a destination yet!") }
                 }}
               >
                 Fax
               </button>
             </div>
           }
+
+          {faxLoaderShow &&
+            <div className='self-center mt-20'> <Watch color='#FFFFFF' /> </div>
+          }
+
           {selectedPost.medUrl &&
-            <div className="mt-4 p-4 bg-green-600 text-lg font-semibold">
-              <p>
-                Published successfully!
-                <a className="block" href={selectedPost.medUrl} target="_blank" rel="noopener noreferrer">
-                  <span className="underline">{selectedPost.medUrl}</span>  &#8599;
-                </a>
-              </p>
-            </div>}
+            <Reward
+              ref={(r)=>{console.log("RR",r);
+            r?.rewardMe();}}
+              type='confetti'>
+                {/* {doneFaxReward.current.rewardMe()} */}
+              <div className="mt-4 p-4 bg-green-600 text-lg font-semibold">
+                <p>
+                  Published successfully!
+                  <a className="block" href={selectedPost.medUrl} target="_blank" rel="noopener noreferrer">
+                    <span className="underline hover:text-green-200">{selectedPost.medUrl}</span>  &#8599;
+                  </a>
+                </p>
+                <p className='mt-4'>
+                  (P.S: This was a demo walkthrough and publishes only to Medium.)
+                </p>
+              </div>
+
+            </Reward>}
         </div>
 
 

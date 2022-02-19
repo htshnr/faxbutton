@@ -29,7 +29,20 @@ const Fax = async (req, res) => {
   //     res.status(200).send(o.data.data);
   //   })
   //   .catch(console.log);
+
+  setTimeout(function(){
     res.status(200).send({"url":"https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962"})
+},2000);
+
+
+  // await new Promise((resolve) => setTimeout(resolve, 50000)).then(
+  //   await res
+  //     .status(200)
+  //     .send({
+  //       url: "https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962",
+  //     })
+  // );
+  // res.status(200).send({"url":"https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962"})
 };
 
 export default Fax;
