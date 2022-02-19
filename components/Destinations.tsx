@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
-function Destinations({ destinations, setDestinations }: any) {
+interface DestProps {
+  destinations: string[],
+  setDestinations: Dispatch<SetStateAction<string[]>>
+}
+
+function Destinations({ destinations, setDestinations }: DestProps) {
 
   const destList = [
     {

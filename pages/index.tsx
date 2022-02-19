@@ -5,11 +5,14 @@ import Destinations from '../components/Destinations';
 
 
 const Home: NextPage = () => {
-  const [urlInputBox, setUrlInputBox] = useState("");
-  const [posts, setPosts] = useState({});
-  const [selectedPost, setSelectedPost] = useState({});
-  const [destinations, setDestinations] = useState(Array());
+  const [urlInputBox, setUrlInputBox] = useState<string>("");
+  const [posts, setPosts] = useState<any>({});
+  const [selectedPost, setSelectedPost] = useState<any>({});
+  const [destinations, setDestinations] = useState<string[]>(Array());
 
+  // console.debug("POSTS", posts);
+  // console.debug("SELECTED POSTS", selectedPost);
+  // console.debug("destinations", destinations);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -39,6 +42,7 @@ const Home: NextPage = () => {
               fetch("api/cors?url=" + urlInputBox)
                 .then(res => {
                   if (!res.ok) {
+                    alert("Error: "+res.statusText);
                     throw Error(res.statusText);
                   }
                   return res;
@@ -47,7 +51,8 @@ const Home: NextPage = () => {
                   setPosts(data);
                 })
                 .catch(err => {
-                  console.log(err);
+                  alert("Error: "+err);
+                  console.debug(err);
                 });
             }
             else { alert("Oops! You haven't added your RSS Feed url yet!") }
@@ -55,7 +60,7 @@ const Home: NextPage = () => {
         >Fetch posts</button>
 
         <div className="flex flex-col">
-          {Object.keys(posts).length !== 0 && posts.items.map((post) => {
+          {Object.keys(posts).length !== 0 && posts.items.map((post: any) => {
             return (
               <button className="p-3 mb-4 w-full text-left border-2 border-green-500 bg-green-200 hover:bg-green-100" key={post.guid}
                 onClick={() => { setSelectedPost(post) }}>
@@ -66,7 +71,7 @@ const Home: NextPage = () => {
           })}
         </div>
       </div>
-      {console.log(selectedPost)}
+      {console.debug(selectedPost)}
       <div
         className={`top-0 right-0 w-2/3 bg-black p-20 pt-12 text-white fixed overflow-scroll h-full z-10 ease-in-out duration-200 ${(Object.keys(selectedPost).length !== 0) ? "translate-x-0 " : "translate-x-full"}`}>
 
@@ -110,11 +115,11 @@ const Home: NextPage = () => {
                     return res;
                   })
                   .then(res => res.json()).then(data => {
-                    setSelectedPost(c => { return { ...c, "medUrl": data.url } });
-                    console.log(data)
+                    setSelectedPost((c:object) => { return { ...c, "medUrl": data.url } });
+                    console.debug(data)
                   })
                   .catch(err => {
-                    console.log(err);
+                    console.debug(err);
                   });
               }
               else { alert("Oops! You haven't chosen a destination yet!") }
