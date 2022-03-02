@@ -13,7 +13,6 @@ const Home: NextPage = () => {
   const [posts, setPosts] = useState<any>({});
   const [selectedPost, setSelectedPost] = useState<any>({});
   const [destinations, setDestinations] = useState<string[]>(Array());
-
   const [listLoaderShow, setListLoaderShow] = useState<boolean>(false);
   const [faxLoaderShow, setFaxLoaderShow] = useState<boolean>(false);
 
@@ -42,32 +41,74 @@ const Home: NextPage = () => {
       </nav>
       <div className="m-12 flex flex-row justify-center antialiased">
         <div className="flex flex-col w-full">
-          <input type="url" className="border-green-500 border-2 rounded-lg p-3" placeholder="Your RSS Feed URL" value={urlInputBox} onChange={(e) => setUrlInputBox(e.target.value)} />
-          <button className="my-6 p-3 bg-green-600 rounded-lg hover:bg-green-700 text-white"
-            onClick={() => {
-              if (urlInputBox !== "") {
-                setListLoaderShow(true);
-                //perform checks for url correctness
-                fetch("api/cors?url=" + urlInputBox)
-                  .then(res => {
-                    setListLoaderShow(false);
-                    if (!res.ok) {
-                      alert("Error: " + res.statusText);
-                      throw Error(res.statusText);
-                    }
-                    return res;
-                  })
-                  .then(res => res.json()).then(data => {
-                    setPosts(data);
-                  })
-                  .catch(err => {
-                    alert("Error: " + err);
-                    console.debug(err);
-                  });
-              }
-              else { alert("You haven't added your RSS feed url yet!") }
-            }}
-          >Fetch posts</button>
+          <form className='w-full flex flex-col'>
+            <input type="url" className="border-green-500 border-2 rounded-lg p-3" placeholder="Your RSS Feed URL" value={urlInputBox} onChange={(e) => setUrlInputBox(e.target.value)} />
+            <button
+              type='submit'
+              className="my-6 p-3 bg-green-600 rounded-lg hover:bg-green-700 text-white"
+              onClick={(e) => {
+                e.preventDefault();
+                if (urlInputBox !== "") {
+                  setListLoaderShow(true);
+                  // add checks for url correctness later
+                  fetch("api/cors?url=" + urlInputBox)
+                    .then(res => {
+                      setListLoaderShow(false);
+                      if (!res.ok) {
+                        alert("Error: " + res.statusText);
+                        throw Error(res.statusText);
+                      }
+                      return res;
+                    })
+                    .then(res => res.json()).then(data => {
+                      setPosts(data);
+                    })
+                    .catch(err => {
+                      alert("Error: " + err);
+                      console.debug(err);
+                    });
+                }
+                else { alert("You haven't added an RSS feed url yet!") }
+              }}
+            >Fetch posts</button>
+          </form>
+
+          {urlInputBox === "" &&
+            <div className='bg-black p-8 my-10 text-center'>
+              <span className='text-white'>A few example feeds (for you to try out the demo with)</span>
+
+              <div className='grid grid-cols-2 gap-4 mt-8'>
+                <button className='p-4 bg-green-100 hover:bg-green-200'
+                  onClick={() => {
+                    setUrlInputBox("https://tips.ariyh.com/feed")
+                  }}
+                >
+                  https://tips.ariyh.com/feed
+                </button>
+                <button className='p-4 bg-green-100 hover:bg-green-200'
+                  onClick={() => {
+                    setUrlInputBox("https://www.readaccelerated.com/feed")
+                  }}
+                >
+                  https://www.readaccelerated.com/feed
+                </button>
+                <button className='p-4 bg-green-100 hover:bg-green-200'
+                  onClick={() => {
+                    setUrlInputBox("https://filtercoffee.substack.com/feed")
+                  }}
+                >
+                  https://filtercoffee.substack.com/feed
+                </button>
+                <button className='p-4 bg-green-100 hover:bg-green-200'
+                  onClick={() => {
+                    setUrlInputBox("https://www.quastor.org/feed")
+                  }}
+                >
+                  https://www.quastor.org/feed
+                </button>
+              </div>
+
+            </div>}
 
           <div className="flex flex-col">
             {listLoaderShow && <div className='relative mb-6 self-center'> <Watch color='#000000' /> </div>}
@@ -96,9 +137,6 @@ const Home: NextPage = () => {
             <div className="text-2xl font-semibold mt-4">
               {selectedPost.title}
             </div>
-            {/* <div className="text-lg mt-4">
-              Description: {selectedPost.contentSnippet}
-            </div> */}
             <div className="mt-2">
               Source: <a href={selectedPost.link} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-200">{selectedPost.link}</a>
             </div>
@@ -148,10 +186,11 @@ const Home: NextPage = () => {
 
           {selectedPost.medUrl &&
             <Reward
-              ref={(r)=>{console.log("RR",r);
-            r?.rewardMe();}}
+              ref={(r) => {
+                console.log("RR", r);
+                r?.rewardMe();
+              }}
               type='confetti'>
-                {/* {doneFaxReward.current.rewardMe()} */}
               <div className="mt-4 p-4 bg-green-600 text-lg font-semibold">
                 <p>
                   Published successfully!
