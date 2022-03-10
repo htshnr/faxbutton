@@ -33,19 +33,19 @@ function Destinations({ destinations, setDestinations }: DestProps) {
   ]
 
   return (
-    <div className="my-5 grid grid-cols-3 gap-10">
+    <div className="my-5 flex flex-col md:grid md:grid-cols-3 md:gap-10">
 
       {destList.map((dest) => {
 
         return (
-          <button key={dest.name} className={`p-5 flex flex-col justify-center items-center ${destinations.includes(dest.name) ? "bg-green-400" : "bg-green-200"}`}
+          <button key={dest.name} className={`p-5 my-2 md:my-0 flex flex-col justify-center items-center ${destinations.includes(dest.name) ? "bg-green-400" : "bg-green-200"}`}
             onClick={() => {
               const index = destinations.indexOf(dest.name);
               index === -1 ? setDestinations(oldArray => [...oldArray, dest.name]) : setDestinations(oldArray => { const copy = oldArray.slice(); copy.splice(index, 1); return [...copy]; });
             }}
           >
             <img src={dest.logo} alt="" className="w-1/4" />
-            <span className="text-black mt-2 text-2xl font-semibold">{dest.name}
+            <span className="text-black mt-2 text-lg md:text-2xl font-semibold">{dest.name}
             </span>
           </button>
         );

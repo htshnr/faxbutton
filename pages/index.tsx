@@ -77,7 +77,7 @@ const Home: NextPage = () => {
             <div className='bg-black p-8 my-10 text-center'>
               <span className='text-white'>A few example feeds (for you to try out the demo with)</span>
 
-              <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div className='flex flex-col md:grid md:grid-cols-2 gap-4 mt-8'>
                 <button className='p-4 bg-green-100 hover:bg-green-200'
                   onClick={() => {
                     setUrlInputBox("https://tips.ariyh.com/feed")
