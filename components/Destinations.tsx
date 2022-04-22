@@ -14,10 +14,7 @@ function Destinations({ destinations, setDestinations }: DestProps) {
       name: "Medium",
       logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Medium_logo_Monogram.svg",
     },
-    {
-      name: "Dev.to",
-      logo: "https://d2fltix0v2e0sb.cloudfront.net/dev-black.png"
-    },
+
     {
       name: "Hashnode",
       logo: "https://cdn.hashnode.com/res/hashnode/image/upload/v1611902473383/CDyAuTy75.png?auto=compress"
@@ -29,6 +26,14 @@ function Destinations({ destinations, setDestinations }: DestProps) {
     {
       name: "Hacker News",
       logo: "https://cdn.iconscout.com/icon/free/png-256/hackernews-2752164-2284981.png"
+    },
+    {
+      name: "Instagram",
+      logo: "https://www.instagram.com/static/images/ico/favicon-200.png/ab6eff595bb1.png"
+    },
+    {
+      name: "Spotify",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Spotify_App_Logo.svg/400px-Spotify_App_Logo.svg.png"
     }
   ]
 

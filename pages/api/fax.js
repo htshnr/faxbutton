@@ -2,8 +2,7 @@ import axios from "axios";
 
 const Fax = async (req, res) => {
   const [post, destinations] = req.body;
-  const mediumToken =
-    "2d405397cd8881feaed1edce7629f1378a01bde95050436786f8fcb3ca4a93b67";
+  const mediumToken = process.env.mediumToken;
   const mediumId =
     "14649358ebb43fe25ad84a470a4ba95b8a29b1bafa1125dfbd3319cb9acda4fe5";
   const b = {
@@ -30,19 +29,6 @@ const Fax = async (req, res) => {
     })
     .catch(console.log);
 
-//   setTimeout(function(){
-//     res.status(200).send({"url":"https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962"})
-// },2000);
-
-
-  // await new Promise((resolve) => setTimeout(resolve, 50000)).then(
-  //   await res
-  //     .status(200)
-  //     .send({
-  //       url: "https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962",
-  //     })
-  // );
-  // res.status(200).send({"url":"https://medium.com/@faxbuttondemo/praise-your-competitors-1de0e305a962"})
 };
 
 export default Fax;
