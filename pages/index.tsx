@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react'
 import Destinations from '../components/Destinations';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { Watch } from 'react-loader-spinner';
 import Reward from 'react-rewards';
